@@ -1,7 +1,7 @@
 {
   "name": "njs-rce",
   "version": "1.0.0",
-  "description": "Node JS RCE Demo APP",
+  "description": "Node JS Deserailize RCE Demo APP",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
