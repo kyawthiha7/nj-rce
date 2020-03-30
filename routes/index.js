@@ -22,7 +22,7 @@ router.post('/login', function(req,resp){
         ser =  Buffer.from(data);
         b64 = ser.toString('base64');
         //console.log(b64)
-        resp.cookie("user", ser)
+        resp.cookie("user", b64)
     }
     else {
         var obj = {
