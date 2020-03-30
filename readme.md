@@ -5,3 +5,6 @@
 
 ## run
 - npm start
+
+## creds
+- admin:admin ( it is in the code )
