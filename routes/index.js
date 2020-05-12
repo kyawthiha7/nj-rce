@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-var serialize = require('node-serialize');
 
 router.get('/', function(req,resp){
     resp.render('Welcome');
@@ -20,48 +19,38 @@ router.post('/ping', function(req,resp){
 })
 
 router.post('/login', function(req,resp){
-    if(req.body.username == 'admin' && req.body.password == 'admin'){
-        var obj = {
-            username : req.body.username,
-            language : "English",
-            server : "Nodejs",
-            admin : true
-        }
-        data = serialize.serialize(obj)
-        ser =  Buffer.from(data);
-        b64 = ser.toString('base64');
-        //console.log(b64)
-        resp.cookie("user", b64)
-    }
-    else {
-        var obj = {
-            username : req.body.username,
-            language : "English",
-            server : "Nodejs"
-        }
-        data = serialize.serialize(obj)
-        ser =  Buffer.from(data);
-        b64 = ser.toString('base64');
-        //console.log(b64)
-        resp.cookie("user", b64)
+    const payload = {                                                                                                                                                                                                                                        username : req.body.username,
+                langauge : "English",
+                server   : "Nodejs",
+                admin    : "False" }                                                                                                                                                                                                                                                                                                                                                                                                                                                          if(req.body.username == 'node-admin' && req.body.password == 'zLFdieOig6Hio4s1BhzB'){
+        payload.admin = "True"
+        var token = jwt.sign({payload}, 'thisissecretkey');
+                                                                                                                                                                                                              //b64 = ser.toString('base64');                                                                                                                                                                                                              //console.log(b64)                                                                                                                                                                                                                           resp.cookie("token", token)
+        console.log(token);
+    }                                                                                                                                                                                                                                            if(req.body.username == 'user' && req.body.password == 'user'){
+        var token = jwt.sign({payload}, 'thisissecretkey');                                                                                                                                                                                                                resp.cookie("token", token)                                                                                                                                                                                                                  //console.log(token);                                                                                                                                                                                                                    }                                                                                                                                                                                                                                            else {                                                                                                                                                                                                                                           payload.user = "unknown"
+        var token = jwt.sign({payload}, 'thisissecretkey');
+                                                                                                                                                                                                        //console.log(b64)
+        resp.cookie("token", token)
     }
     resp.redirect('/dashboard');
 })
 
 router.get('/dashboard', function(req,resp){
-    if(req.cookies.user){
-        buf = new Buffer(req.cookies.user,'base64');
-        str = buf.toString('ascii');
-        obj2 = serialize.unserialize(str);
-        console.log(obj2)
-        if (!obj2.admin) {
-            resp.render('unauthorize');
+    if(req.cookies.token){
+        decoded = jwt.verify(req.cookies.token, 'thisissecretkey');
+        console.log(decoded);                                                                                                                                                                                                                        if(decoded.payload.username == "user"){
+                resp.render('user')
+                //resp.send("user login")
         }
-        else {
-            resp.render('dashboard', { output: null})
+
+        if(decoded.payload.username == "admin"){
+                resp.render('dashboard',{output:null})
+                //resp.send("admin login")
         }
+
     } else {
-        resp.end('Unknow user !!! ')
+        resp.end('Unknow err !!! ')
     }
 
 })
