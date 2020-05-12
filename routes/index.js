@@ -10,6 +10,15 @@ router.get('/login', function(req,resp){
     resp.render('login');
 })
 
+router.post('/ping', function(req,resp){
+    exec('ping -c 2 ' + req.body.address, function(err,stdout,stderr){
+        output = stdout+stderr
+        resp.render('dashboard',{
+                output: output
+        })
+})
+})
+
 router.post('/login', function(req,resp){
     if(req.body.username == 'admin' && req.body.password == 'admin'){
         var obj = {
@@ -36,10 +45,10 @@ router.post('/login', function(req,resp){
         //console.log(b64)
         resp.cookie("user", b64)
     }
-    resp.redirect('/redirects');
+    resp.redirect('/dashboard');
 })
 
-router.get('/redirects', function(req,resp){
+router.get('/dashboard', function(req,resp){
     if(req.cookies.user){
         buf = new Buffer(req.cookies.user,'base64');
         str = buf.toString('ascii');
@@ -49,7 +58,7 @@ router.get('/redirects', function(req,resp){
             resp.render('unauthorize');
         }
         else {
-            resp.render('dashboard')
+            resp.render('dashboard', { output: null})
         }
     } else {
         resp.end('Unknow user !!! ')
