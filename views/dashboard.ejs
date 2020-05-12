@@ -1,4 +1,26 @@
 <h1 class="mt-4">Dashboard</h1>
 <p class="lead mb-3">Welcome Admin We have been waiting for you</p>
 <p class="lead mb-4">Try RCE </p>
+<form id="ping" name="ping" action="/ping" method="post">
+                    <fieldset>
+                        <div >
+                            <label>Address </label>
+                            <div>
+                                <input type="text" name="address" value="" id="ping_address" class="form-control" placeholder="Enter public IP address" />
+                            </div>
+                        </div>
+
+                        <input type="submit" value="Submit" id="ping_0" class="btn btn-primary" />
+                    </fieldset>
+                </form>
+        <% if(output) { %>
+            <div class='row'>
+                <div>
+                   <br>
+                    <h2>Command Output</h2>
+                    <hr/>
+
+                    <pre><%= output %></pre>
+                                                                                                                                                                                                                                                             </div>                                                                                                                                                                                                                                   </div>
+            <% } %>
 <a href="/logout" class="btn btn-secondary">Logout</a>
