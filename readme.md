@@ -7,7 +7,7 @@
 - npm start
 
 ## creds
-- admin:admin ( it is in the code )
+- user:user ( it is in the code )
 <br>
 
  ![LOGIN](rce.PNG)
