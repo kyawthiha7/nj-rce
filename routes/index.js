@@ -19,18 +19,25 @@ router.post('/ping', function(req,resp){
 })
 
 router.post('/login', function(req,resp){
-    const payload = {                                                                                                                                                                                                                                        username : req.body.username,
+    const payload = {
+                username : req.body.username,
                 langauge : "English",
                 server   : "Nodejs",
-                admin    : "False" }                                                                                                                                                                                                                                                                                                                                                                                                                                                          if(req.body.username == 'node-admin' && req.body.password == 'zLFdieOig6Hio4s1BhzB'){
+                admin    : "False" }
+
+    if(req.body.username == 'node-admin' && req.body.password == 'zLFdieOig6Hio4s1BhzB'){
         payload.admin = "True"
         var token = jwt.sign({payload}, 'thisissecretkey');
-                                                                                                                                                                                                              //b64 = ser.toString('base64');                                                                                                                                                                                                              //console.log(b64)                                                                                                                                                                                                                           resp.cookie("token", token)
+        resp.cookie("token", token)
         console.log(token);
-    }                                                                                                                                                                                                                                            if(req.body.username == 'user' && req.body.password == 'user'){
-        var token = jwt.sign({payload}, 'thisissecretkey');                                                                                                                                                                                                                resp.cookie("token", token)                                                                                                                                                                                                                  //console.log(token);                                                                                                                                                                                                                    }                                                                                                                                                                                                                                            else {                                                                                                                                                                                                                                           payload.user = "unknown"
+    }
+    if(req.body.username == 'user' && req.body.password == 'user'){
         var token = jwt.sign({payload}, 'thisissecretkey');
-                                                                                                                                                                                                        //console.log(b64)
+        resp.cookie("token", token)
+    }
+    else {
+        payload.user = "unknown"
+        var token = jwt.sign({payload}, 'thisissecretkey');
         resp.cookie("token", token)
     }
     resp.redirect('/dashboard');
@@ -50,7 +57,7 @@ router.get('/dashboard', function(req,resp){
         }
 
     } else {
-        resp.end('Unknow err !!! ')
+        resp.end('Unauthorize User !!! ')
     }
 
 })
